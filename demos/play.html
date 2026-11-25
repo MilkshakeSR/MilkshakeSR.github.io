@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<meta name="robots" content="noindex">
+<title>Game demo · MilkshakeSR</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #0c0509; color: #f7efe1; font: 15px/1.4 system-ui, -apple-system, 'Segoe UI', sans-serif; overflow: hidden; }
+  canvas { display: block; width: 100%; height: 100%; outline: none; }
+  #msg { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 24px; }
+  #msg[hidden] { display: none; }
+</style>
+</head>
+<body>
+<canvas id="canvas" tabindex="0" aria-label="Game"></canvas>
+<div id="msg" hidden></div>
+<script src="/demos/engine/godot.js"></script>
+<script>
+  // Single-threaded Godot web build shared by all Midnight Casino demos.
+  // ?game=<id> picks /demos/<id>/game.pck. Saving is disabled for demos: user://
+  // is not persisted to IndexedDB (persistentPaths: []), so nothing is kept.
+  (function () {
+    var params = new URLSearchParams(location.search);
+    var game = (params.get('game') || '').replace(/[^a-z0-9-]/g, '');
+    var post = function (type, data) { try { parent.postMessage(Object.assign({ source: 'godot-demo', type: type }, data || {}), location.origin); } catch (e) {} };
+    var fail = function (reason) { var m = document.getElementById('msg'); m.textContent = reason; m.hidden = false; post('error', { reason: reason }); };
+    if (!game) return fail('No game selected.');
+    if (typeof Engine === 'undefined') return fail('The game engine could not be loaded.');
+    if (!Engine.isWebGLAvailable(2)) return fail('This demo needs WebGL 2, which your browser does not support.');
+    var sizes = {}; sizes['/demos/' + game + '/game.pck'] = Number(params.get('pck') || 0); sizes['/demos/engine/godot.wasm'] = Number(params.get('wasm') || 0);
+    var engine = new Engine({
+      executable: '/demos/engine/godot',
+      mainPack: '/demos/' + game + '/game.pck',
+      canvas: document.getElementById('canvas'),
+      canvasResizePolicy: 2,
+      focusCanvas: true,
+      persistentPaths: [],
+      persistentDrops: false,
+      ensureCrossOriginIsolationHeaders: false,
+      fileSizes: sizes,
+      args: ['--web-demo'],
+      onExit: function () { post('exit'); },
+    });
+    engine.startGame({
+      onProgress: function (current, total) { post('progress', { current: current, total: total }); },
+    }).then(function () { post('ready'); document.getElementById('canvas').focus(); }, function (err) { fail('The game could not start: ' + (err && err.message ? err.message : err)); });
+  })();
+</script>
+</body>
+</html>
