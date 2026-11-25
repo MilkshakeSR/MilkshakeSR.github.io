@@ -1,5 +1,5 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["_astro/dog.BKCGlcqM.js","_astro/Base.astro_astro_type_script_index_0_lang.l-DmMl_p.js"])))=>i.map(i=>d[i]);
-import{t as e}from"./Base.astro_astro_type_script_index_0_lang.l-DmMl_p.js";async function t(t){let n=await e(()=>import(`./dog.BKCGlcqM.js`),__vite__mapDeps([0,1])),r=document.createElement(`div`);r.className=`pp-demo`,r.innerHTML=`
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["_astro/dog.BkgRqXeB.js","_astro/Base.astro_astro_type_script_index_0_lang.DyZSwj81.js"])))=>i.map(i=>d[i]);
+import{t as e}from"./Base.astro_astro_type_script_index_0_lang.DyZSwj81.js";async function t(t){let n=await e(()=>import(`./dog.BkgRqXeB.js`),__vite__mapDeps([0,1])),r=document.createElement(`div`);r.className=`pp-demo`,r.innerHTML=`
     <p class="pp-say">The dog along the bottom of this page is a little like a Pocket Pal. Try these:</p>
     <div class="pp-ui">
       <button type="button" class="btn" data-pp="ball"><span class="face">Throw the ball</span></button>
