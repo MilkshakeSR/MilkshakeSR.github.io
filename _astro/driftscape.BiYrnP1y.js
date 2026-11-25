@@ -1,4 +1,4 @@
-import{o as e}from"./Base.astro_astro_type_script_index_0_lang.xwOnjcl-.js";var t=`precision highp float;
+import{o as e}from"./Base.astro_astro_type_script_index_0_lang.l-DmMl_p.js";var t=`precision highp float;
 uniform vec2 uRes; uniform float uTime; uniform float uDay; // uDay: 0 = midnight, 0.5 = noon, 1 = midnight
 float hash(vec2 p){ p = fract(p*vec2(123.34, 456.21)); p += dot(p, p+45.32); return fract(p.x*p.y); }
 float noise(vec2 p){ vec2 i=floor(p), f=fract(p); f=f*f*(3.-2.*f);
