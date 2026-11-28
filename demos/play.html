@@ -15,6 +15,24 @@
 <body>
 <canvas id="canvas" tabindex="0" aria-label="Game"></canvas>
 <div id="msg" hidden></div>
+<script>
+  // The engine ships gzipped (godot.wasm.gz) to stay under the 25 MiB per-file limit
+  // of Cloudflare Workers. Godot asks for godot.wasm, so answer that request by
+  // fetching the .gz file and unpacking it on the fly.
+  (function () {
+    var realFetch = window.fetch.bind(window);
+    window.fetch = function (input, init) {
+      var url = typeof input === 'string' ? input : (input && input.url) || String(input);
+      if (/\/godot\.wasm(\?|$)/.test(url) && typeof DecompressionStream !== 'undefined') {
+        return realFetch(url.replace(/godot\.wasm/, 'godot.wasm.gz'), init).then(function (res) {
+          if (!res.ok) return res;
+          return new Response(res.body.pipeThrough(new DecompressionStream('gzip')), { status: 200, headers: { 'Content-Type': 'application/wasm' } });
+        });
+      }
+      return realFetch(input, init);
+    };
+  })();
+</script>
 <script src="/demos/engine/godot.js"></script>
 <script>
   // Single-threaded Godot web build shared by all Midnight Casino demos.
